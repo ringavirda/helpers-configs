@@ -1,0 +1,80 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+
+# This prompt uses double line format, where the second line only displays path
+# and input character and first line holds all of the additional info
+
+format = """
+$username$hostname on $os ${custom.wsl} $fill$git_metrics$git_status$git_branch
+${custom.superuser}${custom.admin}$directory$character\
+"""
+
+# Second line configs
+
+[directory]
+truncation_length = 2
+truncation_symbol = "…/"
+style = 'bold blue'
+
+[character]
+success_symbol = "[❯](bold blue)"
+error_symbol = "[❯](bold red)"
+format = "$symbol "
+
+# First line configs
+
+[username]
+style_user = "yellow bold"
+style_root = "red bold"
+format = "[$user]($style)"
+disabled = false
+show_always = true
+
+[hostname]
+ssh_only = false
+ssh_symbol = "ssh:"
+format = "[@$ssh_symbol$hostname](blue)"
+trim_at = ".companyname.com"
+disabled = false
+
+[os]
+format = "$symbol[$name]($style)"
+style = "bold underline blue"
+disabled = false
+[os.symbols]
+Windows = " "
+
+[fill]
+symbol = " "
+
+[git_metrics]
+added_style = 'bold blue'
+format = '[+$added]($added_style) / [-$deleted]($deleted_style) '
+disabled = false
+
+[git_branch]
+format = "[$symbol$branch(:$remote_branch)]($style) "
+
+# Custom modules
+
+[custom.wsl]
+format = "[via WSL]($style)"
+style = "bold blue"
+os = "linux"
+when = "grep -i Microsoft /proc/version"
+
+[custom.superuser]
+symbol = "🗲"
+when = '[ "$(id -u)" -eq 0 ]'
+style = "bold red"
+format = "[$symbol]($style) "
+os = "linux"
+
+# TODO: Fix admin module
+# [custom.admin]
+# symbol = "⚡"
+# when = "$elevated = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)"
+# style = "bold red"
+# format = "[$symbol]($style) "
+# os = "windows"
