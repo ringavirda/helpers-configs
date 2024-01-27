@@ -6,26 +6,38 @@ add_newline = true
 # and input character and first line holds all of the additional info
 
 format = """
-$username$hostname on $os ${custom.wsl} $fill$git_metrics$git_status$git_branch
-${custom.superuser}${custom.admin}$directory$character\
+$username$hostname [on](yellow) $os ${custom.wsl} $fill $dotnet$nodejs$python$cmake$java $git_metrics$git_status$git_branch
+${custom.superuser}${custom.admin}$shell$directory$character\
 """
+
+# A continuation prompt that displays an arrow
+continuation_prompt = "[▶](bold yellow) "
 
 # Second line configs
 
 [directory]
 truncation_length = 2
 truncation_symbol = "…/"
-style = 'bold blue'
+style = 'fg:220'
+read_only = " 󰌾"
+
+[shell]
+style = "bold fg:208"
+disabled = false
+powershell_indicator = ""
+cmd_indicator = ""
+bash_indicator = ""
+fish_indicator = "󰈺"
 
 [character]
-success_symbol = "[❯](bold blue)"
-error_symbol = "[❯](bold red)"
+success_symbol = "[](bold yellow)"
+error_symbol = "[](bold red)"
 format = "$symbol "
 
 # First line configs
 
 [username]
-style_user = "yellow bold"
+style_user = "bold fg:208"
 style_root = "red bold"
 format = "[$user]($style)"
 disabled = false
@@ -34,16 +46,54 @@ show_always = true
 [hostname]
 ssh_only = false
 ssh_symbol = "ssh:"
-format = "[@$ssh_symbol$hostname](blue)"
+format = "[@$ssh_symbol$hostname](bold fg:9 italic)"
 trim_at = ".companyname.com"
 disabled = false
 
 [os]
-format = "$symbol[$name]($style)"
-style = "bold underline blue"
+format = "[$symbol$name]($style)"
+style = "bold underline fg:166"
 disabled = false
 [os.symbols]
-Windows = " "
+Alpaquita = " "
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Windows = "󰍲 "
 
 [fill]
 symbol = " "
@@ -54,18 +104,19 @@ format = '[+$added]($added_style) / [-$deleted]($deleted_style) '
 disabled = false
 
 [git_branch]
+symbol = " "
 format = "[$symbol$branch(:$remote_branch)]($style) "
 
 # Custom modules
 
 [custom.wsl]
 format = "[via WSL]($style)"
-style = "bold blue"
+style = "bold fg:166"
 os = "linux"
 when = "grep -i Microsoft /proc/version"
 
 [custom.superuser]
-symbol = "🗲"
+symbol = "⚡"
 when = '[ "$(id -u)" -eq 0 ]'
 style = "bold red"
 format = "[$symbol]($style) "
@@ -73,8 +124,30 @@ os = "linux"
 
 # TODO: Fix admin module
 # [custom.admin]
-# symbol = "⚡"
-# when = "$elevated = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)"
-# style = "bold red"
+# symbol = "🗲"
+# when = ""
 # format = "[$symbol]($style) "
+# style = "bold red"
 # os = "windows"
+
+# Langs and frames
+[docker_context]
+symbol = " "
+[package]
+symbol = "󰏗 "
+[memory_usage]
+symbol = "󰍛 "
+[dotnet]
+disabled = false
+format = "[$symbol($version )]($style)"
+[java]
+symbol = " "
+format = "[${symbol}(${version} )]($style)"
+[nodejs]
+symbol = " "
+format = "[$symbol($version )]($style)"
+[python]
+symbol = " "
+format = "[${symbol}${pyenv_prefix}(${version} )(\\($virtualenv\\) )]($style)"
+[cmake]
+format = "[$symbol($version )]($style)"
