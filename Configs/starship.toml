@@ -1,17 +1,23 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
+
 add_newline = true
 
 # This prompt uses double line format, where the second line only displays path
 # and input character and first line holds all of the additional info
 
+
 format = """
-$username$hostname [on](yellow) $os ${custom.wsl} $fill $dotnet$nodejs$python$cmake$java $git_metrics$git_status$git_branch
-${custom.superuser}${custom.admin}$shell$directory$character\
+$username$hostname [on](yellow) $os ${custom.wsl}\
+(\n[git:](yellow) $git_status$git_branch$git_metrics$docker_context)\
+(\n[tfs:](yellow) $package$python$dotnet$java$nodejs$lua$c$cmake)\
+\n${custom.superuser}${custom.admin}$shell$directory$character\
 """
 
 # A continuation prompt that displays an arrow
 continuation_prompt = "[▶](bold yellow) "
+
+command_timeout = 2000
 
 # Second line configs
 
@@ -98,10 +104,51 @@ Windows = "󰍲 "
 [fill]
 symbol = " "
 
+# Disables
+
+[conda]
+disabled = true
+
+[cmd_duration]
+disabled = true
+
+# Langs and frames
+[c]
+format = "[$symbol($version(-$name) )]($style)"
+
+[docker_context]
+symbol = " "
+
+[package]
+symbol = "󰏗 "
+format = "[$symbol$version]($style) "
+
+[memory_usage]
+symbol = "󰍛 "
+
+[dotnet]
+disabled = false
+format = "[$symbol(${version} )]($style)"
+
+[java]
+symbol = " "
+format = "[${symbol}(${version} )]($style)"
+
+[nodejs]
+symbol = " "
+format = "[$symbol($version )]($style)"
+
+[python]
+symbol = " "
+format = "[${symbol}${pyenv_prefix}(${version} )(\\($virtualenv\\) )]($style)"
+
+[cmake]
+format = "[$symbol($version )]($style)"
+
 [git_metrics]
+disabled = false
 added_style = 'bold blue'
 format = '[+$added]($added_style) / [-$deleted]($deleted_style) '
-disabled = false
 
 [git_branch]
 symbol = " "
@@ -123,31 +170,9 @@ format = "[$symbol]($style) "
 os = "linux"
 
 # TODO: Fix admin module
-# [custom.admin]
+[custom.admin]
 # symbol = "🗲"
-# when = ""
 # format = "[$symbol]($style) "
 # style = "bold red"
 # os = "windows"
-
-# Langs and frames
-[docker_context]
-symbol = " "
-[package]
-symbol = "󰏗 "
-[memory_usage]
-symbol = "󰍛 "
-[dotnet]
-disabled = false
-format = "[$symbol($version )]($style)"
-[java]
-symbol = " "
-format = "[${symbol}(${version} )]($style)"
-[nodejs]
-symbol = " "
-format = "[$symbol($version )]($style)"
-[python]
-symbol = " "
-format = "[${symbol}${pyenv_prefix}(${version} )(\\($virtualenv\\) )]($style)"
-[cmake]
-format = "[$symbol($version )]($style)"
+# shell = ["pwsh", "-NoProfile", "-Command", "-"]
